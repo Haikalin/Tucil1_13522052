@@ -37,6 +37,7 @@ Jika terjadi error memasukkan ``` ./run.bat ``` :
 * Masukkan secara berurutan jumlah token unik, token, ukuran buffer, ukuran matriks, jumlah sekuens, ukuran maksimal sekuens
 2. Jika memilih Text:
 * Masukkan nama file tanpa menambahkan ekstensi ``` .txt ```
+<br>
 Output dapat disave ke dalam bentuk file (nama file tidak perlu ditambah ekstensi .txt)
 
 ## Authors
