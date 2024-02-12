@@ -5,6 +5,7 @@
 #include <fstream>
 #include <random>
 #include <bits/stdc++.h>
+#include <chrono>
 using namespace std;
 
 bool ceksama(vector<int> angka_penyusun_1, vector<int> angka_penyusun_2) {
@@ -230,8 +231,7 @@ int main()
         }
     }
 
-    clock_t start, end;
-    start = clock();
+    auto start = chrono::high_resolution_clock::now();
     // for (int i = 0; i < kumpulankode.size(); i++) {
     //     for(int j = 0; j < kumpulankode[i].size(); j++) {
     //         cout << kumpulankode[i][j] << " ";
@@ -446,7 +446,8 @@ int main()
         i += 1;
     }
 
-    end = clock();
+    auto end = chrono::high_resolution_clock::now();
+    double elapsed_time_ms = chrono::duration<double, milli>(end - start).count();
 
     if(max == 0) {
         cout << "Poin maksimal " << max << endl;
@@ -459,7 +460,7 @@ int main()
     for(int i = 0; i < jejakkaki.size(); i++) {
         cout << jejakkaki[i][1]+1 << ", " << jejakkaki[i][0]+1 << endl;
     }
-    cout << (end - start)<< " ms" << endl;
+    cout << time << " ms" << endl;
     char yorn;
     cout << "Apakah ingin disimpan di file txt? (y/n) ";
     cin  >> yorn;
@@ -480,7 +481,7 @@ int main()
             infile << jejakkaki[i][1] + 1 << ", " << jejakkaki[i][0] + 1;
             infile << "\n";
         }
-        infile << end - start << " ms";
+        infile << time << " ms";
     }
 
     // yang kurang:
