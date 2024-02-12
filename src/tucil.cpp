@@ -152,6 +152,7 @@ int main()
         cout << "Masukkan nama file yang akan diinput: ";
         cin >> namafile;
         path += namafile;
+        path += ".txt";
         ifstream file(path);
         while (file >> buffer_size) {
             file >> map_width >> map_height;
@@ -475,6 +476,7 @@ int main()
         cout << "Masukkan nama file: ";
         cin >> fileinput;
         pathinput += fileinput;
+        pathinput += ".txt";
         ofstream infile;
         infile.open(pathinput);
         infile << max << "\n";
