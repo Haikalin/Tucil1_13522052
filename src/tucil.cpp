@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <typeinfo>
 #include <fstream>
 #include <random>
 #include <bits/stdc++.h>
@@ -106,15 +105,22 @@ bool checkhistory(int baris, int kolom, vector<vector<vector<int> > > history, i
     }
 }
 
-void cetakhistory(vector<vector<vector<int> > > history) {
-    for(int i = 0; i < history.size(); i++) {
-        cout << i << " ";
-        for(int j = 0; j < history[i].size(); j++) {
-            for(int k = 0; k < history[i][j].size(); k++) {
-                cout << history[i][j][k] << " ";
-            }
+bool cekjejak (vector<vector<int > > jejak, int baris, int kolom) {
+    int sama = 0;
+    vector<int> posisi;
+    posisi.push_back(baris);
+    posisi.push_back(kolom);
+    for(int i = 0; i < jejak.size(); i++) {
+        if(jejak[i] == posisi) {
+            sama += 1;
         }
-        cout << endl;
+    }
+
+    if(sama > 0) {
+        return false;
+    }
+    else {
+        return true;
     }
 }
 
@@ -231,7 +237,8 @@ int main()
         }
     }
 
-    auto start = chrono::high_resolution_clock::now();
+    clock_t start,end;
+    start = clock();
     // for (int i = 0; i < kumpulankode.size(); i++) {
     //     for(int j = 0; j < kumpulankode[i].size(); j++) {
     //         cout << kumpulankode[i][j] << " ";
@@ -307,6 +314,7 @@ int main()
         }
     }
 
+
     vector<int> kumpulanpoin;
     for(int i = 0; i < angka_penyusun.size(); i++) {
         int skor = 0;
@@ -372,7 +380,7 @@ int main()
             while (optimal == true and idx < sequence[i].size()) {
                 if(ver % 2 == 0) {
                     for(int start = 0; start < map.size(); start++) {
-                        if(sequence[i][idx] == map[start][posisi[1]] and checkhistory(start,posisi[1],history,idx) and start != posisi[0]) {
+                        if(sequence[i][idx] == map[start][posisi[1]] and checkhistory(start,posisi[1],history,idx) and cekjejak(jejak,start,posisi[1]) ) {
                             idx += 1;
                             ver += 1;
                             posisi[0] = start;
@@ -382,13 +390,13 @@ int main()
                         else if(ver == 0  and (sequence[i][idx] != map[start][posisi[1]] or checkhistory(start,posisi[1],history,idx) == false) and start == map.size()-1) {
                             optimal = false;
                         }
-                        else if((sequence[i][idx] != map[start][posisi[1]] or checkhistory(start,posisi[1],history,idx == false)) and start == map.size()-1) { //Error
+                        else if((sequence[i][idx] != map[start][posisi[1]] or checkhistory(start,posisi[1],history,idx == false) or history[idx].size() > 0) and start == map.size()-1) { //Error
                             if(idx == 0) {
                                 optimal = false;
                                 break;
                             }
+                            // cout << "SALAH" << endl;
                             history[idx-1].push_back(posisi);
-                            // cetakhistory(history);
                             idx -= 1;
                             ver -= 1;
                             jejak.pop_back();
@@ -398,11 +406,9 @@ int main()
                     }
                 }
                 else if(ver % 2 == 1) {
-                    for(int start = 0; start < map.size(); start++) {
-                        // cout << start << " " << map[0].size() << endl;
-                        // cout << idx << endl;
-                        if(sequence[i][idx] == map[posisi[0]][start] and checkhistory(posisi[0],start,history,idx) and start != posisi[1]) {
-                            idx += 1;
+                    for(int start = 0; start < map[0].size(); start++) {
+                        if(sequence[i][idx] == map[posisi[0]][start] and checkhistory(posisi[0],start,history,idx) and cekjejak(jejak,posisi[0],start)) {
+                            idx += 1; 
                             ver += 1;
                             posisi[1] = start;
                             jejak.push_back(posisi);
@@ -411,14 +417,14 @@ int main()
                         else if(ver == 0  and (sequence[i][idx] != map[posisi[0]][start] or checkhistory(posisi[0],start,history,idx) == false) and start == map[0].size()-1) {
                             optimal = false;
                         }
-                        else if((sequence[i][idx] != map[posisi[0]][start] or checkhistory(posisi[0],start,history,idx) == false) and start == map[0].size()-1) {
+                        else if((sequence[i][idx] != map[posisi[0]][start] or checkhistory(posisi[0],start,history,idx) == false or history[idx].size() > 0) and start == map[0].size()-1) {
+                            // cout << "SALAH" << endl;
                             if(idx == 0) {
                                 optimal = false;
                                 break;
                             }
                             else {
                                 history[idx-1].push_back(posisi);
-                                // cetakhistory(history);
                                 idx -= 1;
                                 ver -= 1;
                                 jejak.pop_back();
@@ -446,9 +452,6 @@ int main()
         i += 1;
     }
 
-    auto end = chrono::high_resolution_clock::now();
-    double elapsed_time_ms = chrono::duration<double, milli>(end - start).count();
-
     if(max == 0) {
         cout << "Poin maksimal " << max << endl;
         cout << endl;
@@ -460,7 +463,9 @@ int main()
     for(int i = 0; i < jejakkaki.size(); i++) {
         cout << jejakkaki[i][1]+1 << ", " << jejakkaki[i][0]+1 << endl;
     }
-    cout << time << " ms" << endl;
+    end = clock();
+    double timeelapsed = double(end-start) / double(CLOCKS_PER_SEC);
+    cout << timeelapsed*1000 << setprecision(10) << " ms" << endl;
     char yorn;
     cout << "Apakah ingin disimpan di file txt? (y/n) ";
     cin  >> yorn;
@@ -481,7 +486,7 @@ int main()
             infile << jejakkaki[i][1] + 1 << ", " << jejakkaki[i][0] + 1;
             infile << "\n";
         }
-        infile << time << " ms";
+        infile << timeelapsed*1000 << setprecision(10) << " ms";
     }
 
     // yang kurang:
