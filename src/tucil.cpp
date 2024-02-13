@@ -488,6 +488,7 @@ int main()
             infile << jejakkaki[i][1] + 1 << ", " << jejakkaki[i][0] + 1;
             infile << "\n";
         }
+        infile << "\n";
         infile << timeelapsed*1000 << setprecision(10) << " ms";
     }
 
