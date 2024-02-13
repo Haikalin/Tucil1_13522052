@@ -353,6 +353,7 @@ int main()
 
 
     // Mencari langkah paling optimal
+    int rowfinal;
     bool found = false;
     int row = 0;
     vector<int> step;
@@ -377,6 +378,11 @@ int main()
             if(sequence[i][idx] == map[0][posisi[1]]) { // Error ketika row == elemen
                 idx += 1;
                 jejak.push_back({0,row});
+            }
+            else if(sequence[i][idx] != map[0][posisi[1]]) {
+                if(sequence[i].size() == buffer_size) {
+                    optimal = false;
+                }
             }
             while (optimal == true and idx < sequence[i].size()) {
                 if(ver % 2 == 0) {
@@ -446,6 +452,12 @@ int main()
                     cout << "Poin maksimal " << kumpulanpoin[i] << endl;
                     finalkode = sequence[i];
                     jejakkaki = jejak;
+                    if(idx != ver) {
+                        rowfinal = -1;
+                    }
+                    else {
+                        rowfinal = row;
+                    }
                 }    
             }
             row += 1;
@@ -457,10 +469,16 @@ int main()
         cout << "Poin maksimal " << max << endl;
         cout << endl;
     }
+    if(rowfinal != -1) {
+        cout << map[0][rowfinal] << " ";
+    }
     for(int i = 0; i < finalkode.size(); i++) {
         cout << finalkode[i] << " ";
     }
     cout << endl;
+    if(rowfinal != -1) {
+        cout << rowfinal+1 << ", " << "1" << endl;
+    }
     for(int i = 0; i < jejakkaki.size(); i++) {
         cout << jejakkaki[i][1]+1 << ", " << jejakkaki[i][0]+1 << endl;
     }
@@ -480,10 +498,16 @@ int main()
         ofstream infile;
         infile.open(pathinput);
         infile << max << "\n";
+        if(rowfinal != -1) {
+            infile << map[0][rowfinal] << " ";
+        }
         for(int i = 0; i < finalkode.size(); i++) {
             infile << finalkode[i] << " ";
         }
         infile << "\n";   
+        if(rowfinal != -1) {
+            infile << rowfinal+1 << ", " << "1" << endl;
+        }
         for (int i = 0; i < jejakkaki.size(); i++) {
             infile << jejakkaki[i][1] + 1 << ", " << jejakkaki[i][0] + 1;
             infile << "\n";

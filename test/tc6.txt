@@ -1,13 +1,14 @@
 248
-DD CC AA BB AA CC DD DD DD EE 
-5, 8
-1, 8
-1, 7
-3, 7
-3, 5
-4, 5
+DD CC AA DD DD DD EE BB AA CC 
+2, 1
+2, 6
+4, 6
 4, 2
 7, 2
 7, 8
 3, 8
-797 ms
+3, 1
+5, 1
+5, 6
+
+788 ms
